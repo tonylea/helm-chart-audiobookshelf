@@ -1,4 +1,4 @@
-# Empty folders stand in for the libraries, one read-only and one writable.
+# Empty folders stand in for the libraries, one read-only and one read-write.
 libraries:
   - name: audiobooks
     mountPath: /audiobooks
