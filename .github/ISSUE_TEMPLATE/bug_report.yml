@@ -1,0 +1,36 @@
+name: Bug report
+description: Something doesn't work as documented.
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: The values you installed with, and the steps needed to see the problem.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The chart version you're using, for example 1.0.0.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Kubernetes and Helm versions, and and the audiobookshelf version if not the chart's appVersion.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant output from audiobookshelf's pod. Remove anything secret first.
+      render: text

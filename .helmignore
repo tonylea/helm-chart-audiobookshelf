@@ -1,0 +1,19 @@
+# The repo's tooling, tests and CI, none of which the chart needs.
+.git/
+.github/
+.husky/
+node_modules/
+ci/
+tests/
+.commitlintrc.json
+.cspell.json
+.gitignore
+.markdownlint-cli2.jsonc
+.secretlintrc.json
+.versionrc.json
+CHANGELOG.md
+CONTRIBUTING.md
+package.json
+package-lock.json
+*.tgz
+.DS_Store
