@@ -1,4 +1,6 @@
 suite: Service
+release:
+  name: audiobookshelf
 templates:
   - templates/service.yaml
 tests:

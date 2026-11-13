@@ -1,4 +1,6 @@
 suite: HTTPRoute
+release:
+  name: audiobookshelf
 templates:
   - templates/httproute.yaml
 tests:
@@ -28,7 +30,7 @@ tests:
       - equal:
           path: spec.rules[0].backendRefs
           value:
-            - name: RELEASE-NAME
+            - name: audiobookshelf
               port: 80
 
   - it: needs a parent when enabled

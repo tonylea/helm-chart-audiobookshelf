@@ -1,4 +1,6 @@
 suite: Deployment
+release:
+  name: audiobookshelf
 templates:
   - templates/deployment.yaml
 tests:
@@ -54,10 +56,10 @@ tests:
           value:
             - name: config
               persistentVolumeClaim:
-                claimName: RELEASE-NAME-config
+                claimName: audiobookshelf-config
             - name: metadata
               persistentVolumeClaim:
-                claimName: RELEASE-NAME-metadata
+                claimName: audiobookshelf-metadata
 
   - it: mounts each library from its own volume, read-only only when asked
     set:
