@@ -1,0 +1,17 @@
+suite: Service
+release:
+  name: audiobookshelf
+templates:
+  - templates/service.yaml
+tests:
+  - it: serves the web UI on 80 inside the cluster only
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - equal:
+          path: spec.ports
+          value:
+            - name: http
+              port: 80
+              targetPort: http

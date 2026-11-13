@@ -1,0 +1,24 @@
+name: Versioning
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    uses: tonylea/ci-templates/.github/workflows/versioning-common.yml@v1.3.0
+    permissions:
+      contents: write
+    secrets:
+      release-deploy-key: ${{ secrets.RELEASE_DEPLOY_KEY }}
+
+  publish:
+    needs: [release]
+    if: needs.release.outputs.version != ''
+    uses: tonylea/ci-templates/.github/workflows/versioning-helm.yml@v1.3.0
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    with:
+      version: ${{ needs.release.outputs.version }}

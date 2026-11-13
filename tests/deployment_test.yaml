@@ -1,0 +1,126 @@
+suite: Deployment
+release:
+  name: audiobookshelf
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: runs one replica of the chart's appVersion, stopping the old pod first
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+      - equal:
+          path: spec.strategy.type
+          value: Recreate
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/advplyr/audiobookshelf:2.37.2
+
+  - it: probes /healthcheck, giving a first start 5 minutes
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe
+          value:
+            httpGet:
+              path: /healthcheck
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /healthcheck
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /healthcheck
+
+  - it: requests CPU and memory, with no limits
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources
+          value:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+
+  - it: keeps config and metadata on the release's claims
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts
+          value:
+            - name: config
+              mountPath: /config
+            - name: metadata
+              mountPath: /metadata
+      - equal:
+          path: spec.template.spec.volumes
+          value:
+            - name: config
+              persistentVolumeClaim:
+                claimName: audiobookshelf-config
+            - name: metadata
+              persistentVolumeClaim:
+                claimName: audiobookshelf-metadata
+
+  - it: mounts each library from its own volume, read-only only when asked
+    set:
+      libraries:
+        - name: audiobooks
+          mountPath: /audiobooks
+          readOnly: true
+          volume:
+            hostPath:
+              path: /srv/audiobooks
+              type: Directory
+        - name: podcasts
+          mountPath: /podcasts
+          volume:
+            hostPath:
+              path: /srv/podcasts
+              type: Directory
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: library-audiobooks
+            mountPath: /audiobooks
+            readOnly: true
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: library-podcasts
+            mountPath: /podcasts
+            readOnly: false
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: library-audiobooks
+            hostPath:
+              path: /srv/audiobooks
+              type: Directory
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: library-podcasts
+            hostPath:
+              path: /srv/podcasts
+              type: Directory
+
+  - it: sets affinity only when given
+    asserts:
+      - notExists:
+          path: spec.template.spec.affinity
+
+  - it: passes affinity through
+    set:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: example.com/drives
+                    operator: In
+                    values: ["true"]
+    asserts:
+      - equal:
+          path: spec.template.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key
+          value: example.com/drives
