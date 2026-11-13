@@ -1,0 +1,11 @@
+# Empty folders stand in for the libraries, one read-only and one writable.
+libraries:
+  - name: audiobooks
+    mountPath: /audiobooks
+    readOnly: true
+    volume:
+      emptyDir: {}
+  - name: podcasts
+    mountPath: /podcasts
+    volume:
+      emptyDir: {}

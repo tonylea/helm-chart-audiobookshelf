@@ -1,0 +1,38 @@
+image:
+  repository: ghcr.io/advplyr/audiobookshelf
+  # Empty uses the chart's appVersion.
+  tag: ""
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 128Mi
+
+# ReadWriteOnce claims for audiobookshelf's own state. An empty storageClassName uses the cluster's default class.
+persistence:
+  # The SQLite database, which mustn't be on network storage.
+  config:
+    size: 1Gi
+    storageClassName: ""
+  # Covers, author images, cache, logs and backups.
+  metadata:
+    size: 5Gi
+    storageClassName: ""
+
+# Folders holding the books and podcasts, each a volume mounted at mountPath, for example:
+#   - name: audiobooks
+#     mountPath: /audiobooks
+#     readOnly: true
+#     volume:
+#       hostPath:
+#         path: /srv/audiobooks
+#         type: Directory
+libraries: []
+
+affinity: {}
+
+# A Gateway API HTTPRoute to the web UI.
+httpRoute:
+  enabled: false
+  parentRefs: []
+  hostnames: []

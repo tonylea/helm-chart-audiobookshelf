@@ -1,0 +1,19 @@
+{{- range $name := list "config" "metadata" }}
+{{- $volume := index $.Values.persistence $name }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ printf "%s-%s" $.Release.Name $name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "audiobookshelf.labels" $ | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with $volume.storageClassName }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $volume.size }}
+{{- end }}

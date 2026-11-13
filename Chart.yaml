@@ -1,0 +1,9 @@
+apiVersion: v2
+name: audiobookshelf
+description: Deploys audiobookshelf, a self-hosted audiobook and podcast server
+type: application
+version: 1.0.0
+appVersion: "2.37.2"
+home: https://github.com/tonylea/helm-chart-audiobookshelf
+sources:
+  - https://github.com/advplyr/audiobookshelf
