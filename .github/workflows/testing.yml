@@ -1,0 +1,28 @@
+name: Testing
+
+on:
+  pull_request:
+
+jobs:
+  changes:
+    uses: tonylea/ci-templates/.github/workflows/changes-helm-chart.yml@v1.3.0
+
+  helm-unittest:
+    needs: [changes]
+    if: needs.changes.outputs.chart == 'true'
+    uses: tonylea/ci-templates/.github/workflows/testing-helm-unittest.yml@v1.3.0
+
+  helm-kind:
+    needs: [changes]
+    if: needs.changes.outputs.chart == 'true'
+    uses: tonylea/ci-templates/.github/workflows/testing-helm-kind.yml@v1.3.0
+
+  # The required check. Skipped jobs pass; failed or cancelled ones don't.
+  testing:
+    needs: [changes, helm-unittest, helm-kind]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Every testing job passed
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
