@@ -18,7 +18,7 @@ Say what you expected, what happened, and how to reproduce it.
 
 ## Commit messages
 
-Commits follow [Conventional Commits](https://www.conventionalcommits.org/), for example `fix: probe the metrics port by name`.
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/), for example `fix: probe /healthcheck by the port's name`.
 The type says what changed:
 
 - `feat`: new behaviour
