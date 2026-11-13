@@ -1,4 +1,7 @@
 {{- if .Values.httpRoute.enabled }}
+{{- if not .Values.httpRoute.parentRefs }}
+{{- fail "httpRoute.parentRefs is required when httpRoute is enabled" }}
+{{- end }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -8,7 +11,7 @@ metadata:
     {{- include "audiobookshelf.labels" . | nindent 4 }}
 spec:
   parentRefs:
-    {{- required "httpRoute.parentRefs is required when httpRoute is enabled" .Values.httpRoute.parentRefs | toYaml | nindent 4 }}
+    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
   {{- with .Values.httpRoute.hostnames }}
   hostnames:
     {{- toYaml . | nindent 4 }}
