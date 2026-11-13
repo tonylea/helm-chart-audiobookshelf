@@ -27,7 +27,7 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Kubernetes and Helm versions, and and the audiobookshelf version if not the chart's appVersion.
+      description: Kubernetes and Helm versions, and the image tag if it isn't the chart's appVersion.
   - type: textarea
     id: logs
     attributes:
