@@ -8,6 +8,9 @@ metadata:
   namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "audiobookshelf.labels" $ | nindent 4 }}
+    {{- with $volume.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   accessModes: [ReadWriteOnce]
   {{- with $volume.storageClassName }}
