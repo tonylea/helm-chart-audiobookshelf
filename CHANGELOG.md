@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0](https://github.com/tonylea/helm-chart-audiobookshelf/compare/v1.0.0...v1.1.0) (2026-11-14)
+
+### Features
+
+* add each claim's labels from persistence.<name>.labels ([e76fe2c](https://github.com/tonylea/helm-chart-audiobookshelf/commit/e76fe2cb974a7c36fbc3eb99f2629f0e11374574))
+
 ## 1.0.0 (2026-11-13)
 
 ### Features
