@@ -46,3 +46,22 @@ tests:
           path: spec.storageClassName
           value: bulk
         documentIndex: 1
+
+  - it: adds the labels it's given to each claim's own
+    set:
+      persistence.config.labels:
+        backup: nightly
+      persistence.metadata.labels:
+        backup: weekly
+    asserts:
+      - equal:
+          path: metadata.labels.backup
+          value: nightly
+        documentIndex: 0
+      - equal:
+          path: metadata.labels.backup
+          value: weekly
+        documentIndex: 1
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: audiobookshelf

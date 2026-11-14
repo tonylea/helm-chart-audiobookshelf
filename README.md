@@ -29,6 +29,8 @@ It exposes no Prometheus metrics, so the chart has no `ServiceMonitor` or dashbo
 | `httpRoute.parentRefs` | none; required when enabled |
 | `httpRoute.hostnames` | none |
 
+Each `persistence` entry also takes `labels`, added to its claim's own, for example to opt it into a storage system's backups.
+
 Each entry in `libraries` has a `name`, a `mountPath`, an optional `readOnly`, and a `volume`, any Kubernetes volume source.
 audiobookshelf asks that no mount is inside another, so keep `mountPath` outside `/config` and `/metadata`.
 
